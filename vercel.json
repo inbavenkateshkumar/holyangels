@@ -16,6 +16,11 @@
       "dest": "server.js"
     }
   ],
+  "functions": {
+    "server.js": {
+      "includeFiles": "public/**"
+    }
+  },
   "env": {
     "NODE_ENV": "production"
   }

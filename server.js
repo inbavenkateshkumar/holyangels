@@ -9,14 +9,17 @@ const PORT = process.env.PORT || 3000;
 // Database connection
 const db = require('./config/database');
 
-// Test database connection
-db.query('SELECT NOW()', (err, result) => {
-    if (err) {
-        console.error('❌ Database connection failed:', err.message);
-    } else {
-        console.log('✅ Database connected successfully');
-    }
-});
+if (!process.env.VERCEL || process.env.DB_HOST) {
+    db.query('SELECT NOW()', (err, result) => {
+        if (err) {
+            console.error('❌ Database connection failed:', err.message);
+        } else {
+            console.log('✅ Database connected successfully');
+        }
+    });
+} else {
+    console.log('ℹ️ Skipping DB connectivity test on Vercel (no DB env configured)');
+}
 
 // Middleware
 app.use(cors());

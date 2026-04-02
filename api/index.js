@@ -37,4 +37,18 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Serverless API is running' });
 });
 
+// Serve static files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error('API Error:', err);
+  res.status(500).json({ error: 'Server error', message: err.message });
+});
+
 module.exports = serverless(app);

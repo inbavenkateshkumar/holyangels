@@ -12,7 +12,18 @@ app.use(express.urlencoded({ extended: true }));
 
 // Database connection (optional on Vercel if env not set)
 const db = require('../config/database');
-if (process.env.DB_HOST) {
+
+// Status check
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'API is running',
+    mode: process.env.VERCEL ? 'production' : 'development',
+    demoMode: db.demoMode || false
+  });
+});
+
+if (process.env.DB_HOST && !db.demoMode) {
   db.query('SELECT NOW()', (err) => {
     if (err) {
       console.error('❌ Database connection failed:', err.message);
